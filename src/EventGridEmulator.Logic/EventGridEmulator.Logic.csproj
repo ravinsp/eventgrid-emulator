@@ -44,10 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DispatcherStrategyFactory.cs" />
     <Compile Include="EventDispatcher.cs" />
     <Compile Include="EventRequestParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DispatcherStrategies\EventGridFunctionStrategy.cs" />
+    <Compile Include="DispatchStrategies\DefaultHttpStrategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EventGridEmulator.Contracts\EventGridEmulator.Contracts.csproj">

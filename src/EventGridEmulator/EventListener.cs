@@ -12,17 +12,18 @@ namespace EventGridEmulator
     public class EventListener
     {
         private readonly EmulatorConfiguration _config;
-        private readonly Dictionary<string, DispatchStrategyConfiguration> _strategyLookups;
+        
         private readonly ILogger _logger;
         private readonly EventRequestParser _requestParser;
+        private readonly DispatcherStrategyFactory _dispatcherStrategyFactory;
 
         public EventListener(EmulatorConfiguration config, ILogger logger)
         {
             _config = config;
             _logger = logger;
             _requestParser = new EventRequestParser(config.Topics, logger);
+            _dispatcherStrategyFactory = new DispatcherStrategyFactory(config.DispatchStrategies, logger);
 
-            _strategyLookups = config.DispatchStrategies.ToDictionary(s => s.Name);
         }
 
         public async Task StartListeningAsync()
@@ -35,6 +36,8 @@ namespace EventGridEmulator
 
             while (true)
             {
+                _logger.LogInfo(Environment.NewLine + "Waiting for requests...");
+
                 var context = await listener.GetContextAsync();
                 var request = context.Request;
                 var response = context.Response;
@@ -55,18 +58,23 @@ namespace EventGridEmulator
                 try
                 {
                     events = await _requestParser.ReadEventsFromStreamAsync(request.InputStream, request.ContentEncoding);
+                    response.StatusCode = 200; //OK
+                    response.Close();
                 }
-                catch
+                catch(Exception ex)
                 {
                     _logger.LogError("Invalid reqest body format. Could not parse events.");
+                    _logger.LogError(ex.ToString());
                 }
 
                 if (events != null && events.Count() > 0)
                 {
-                    await DispatchEventsAsync(topicConfiguration, events);
+                    foreach(var ev in events)
+                    {
+                        _logger.LogInfo($"Received event: {JsonConvert.SerializeObject(ev)}");
+                    }
 
-                    response.StatusCode = 200; //OK
-                    response.Close();
+                    await DispatchEventsAsync(topicConfiguration, events);
                     return;
                 }
                 else
@@ -81,11 +89,10 @@ namespace EventGridEmulator
 
         private async Task DispatchEventsAsync(TopicConfiguration topicConfiguration, IEnumerable<EventGridEvent> events)
         {
-            var dispatcher = new EventDispatcher(topicConfiguration.Subscriptions, _strategyLookups, _logger);
+            var dispatcher = new EventDispatcher(topicConfiguration.Subscriptions, _dispatcherStrategyFactory, _logger);
 
             foreach (var ev in events)
             {
-                _logger.LogInfo($"Received event: {JsonConvert.SerializeObject(ev)}");
                 await dispatcher.DispatchEventAsync(ev);
             }
         }

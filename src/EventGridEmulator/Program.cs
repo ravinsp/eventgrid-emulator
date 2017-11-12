@@ -12,7 +12,8 @@ namespace EventGridEmulator
         static void Main(string[] args)
         {
             Console.WriteLine("Unofficial Azure EventGrid Emulator");
-            Console.WriteLine("Ravin Perera");
+            Console.WriteLine("by Ravin Perera");
+            Console.WriteLine();
 
             try
             {

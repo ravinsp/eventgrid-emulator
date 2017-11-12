@@ -6,18 +6,17 @@
       "subscriptions": [
         {
           "name": "MyAzureFunc1",
-          "eventTypes": [ "Rain", "Sunny" ],
-          "endpointUrl": "",
-          "dispatchStrategy": "EventGridFunction"
+          "eventTypes": [ "Rain", "Sunny" ], /*Leave null to match all event types*/
+          "endpointUrl": "http://localhost:<port>/admin/extensions/EventGridExtensionConfig?functionName=<MyFuncName>",
+          "dispatchStrategy": "DefaultHttpStrategy"
         }
       ]
     }
   ],
   "dispatchStrategies": [
     {
-      "name": "EventGridFunction",
-      "assembly": "EventGridEmulator.Logic",
-      "type": "EventGridEmulator.Logic.PublisherStrategies.EventGridFunctionStrategy"
+      "name": "DefaultHttpStrategy",
+      "type": "EventGridEmulator.Logic.DispatchStrategies.DefaultHttpStrategy"
     }
   ]
 }
