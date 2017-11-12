@@ -1,0 +1,23 @@
+﻿{
+  "port": 5000,
+  "topics": [
+    {
+      "name": "WeatherEvents",
+      "subscriptions": [
+        {
+          "name": "MyAzureFunc1",
+          "eventTypes": [ "Rain", "Sunny" ],
+          "endpointUrl": "",
+          "dispatchStrategy": "EventGridFunction"
+        }
+      ]
+    }
+  ],
+  "dispatchStrategies": [
+    {
+      "name": "EventGridFunction",
+      "assembly": "EventGridEmulator.Logic",
+      "type": "EventGridEmulator.Logic.PublisherStrategies.EventGridFunctionStrategy"
+    }
+  ]
+}
