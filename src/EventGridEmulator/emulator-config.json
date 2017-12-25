@@ -7,6 +7,8 @@
         {
           "name": "MyAzureFunc1",
           "eventTypes": [ "Rain", "Sunny" ], /*Leave null to match all event types*/
+          "SubjectBeginsWith": "",
+          "SubjectEndsWith": "",
           "endpointUrl": "http://localhost:<port>/admin/extensions/EventGridExtensionConfig?functionName=<MyFuncName>",
           "dispatchStrategy": "DefaultHttpStrategy"
         }

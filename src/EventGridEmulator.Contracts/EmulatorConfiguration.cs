@@ -19,6 +19,8 @@ namespace EventGridEmulator.Contracts
     {
         public string Name { get; set; }
         public IEnumerable<string> EventTypes { get; set; }
+        public string SubjectBeginsWith { get; set; }
+        public string SubjectEndsWith { get; set; }
         public string EndpointUrl { get; set; }
         public string DispatchStrategy { get; set; }
     }
