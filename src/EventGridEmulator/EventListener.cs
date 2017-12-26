@@ -29,10 +29,11 @@ namespace EventGridEmulator
         public async Task StartListeningAsync()
         {
             var listener = new HttpListener();
+            var listenerPrefix = $"http://localhost:{_config.Port}/";
 
-            listener.Prefixes.Add(string.Format("http://*:{0}/", _config.Port));
+            listener.Prefixes.Add(listenerPrefix);
             listener.Start();
-            _logger.LogInfo($"Started listening on port {_config.Port}...");
+            _logger.LogInfo($"Started listening on {listenerPrefix}");
 
             while (true)
             {

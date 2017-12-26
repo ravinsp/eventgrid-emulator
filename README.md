@@ -22,9 +22,8 @@ Microsoft provides the ability to [run your Azure Functions locally](https://doc
 
  * Does not support Labels yet.
  * Does not support Event expiration, delivery guarantees and retry policies (see [here](https://docs.microsoft.com/en-us/azure/event-grid/delivery-and-retry) for real Event Grid behaviour).
- * The subscription endpoint has to be alive in order to deliver the event. The emulator tries to dispatch events immediately and simply logs any failures.
+ * The subscriber endpoint has to be alive in order to deliver the event. The emulator tries to dispatch events immediately and simply logs any failures.
  * Strictly limited for developer testing. Not intended for any sort of production workloads.
- * **Requires Admin priviledges** (Run as administrator) for ports other than 80 due to the use of HttpListener.
 
 ### Instructions
 
@@ -51,7 +50,7 @@ The following sample indicates a config for following setup:
         {
           "name": "MyFuncSubscription1",
           "eventTypes": [ "Rain", "Sunny" ], /*Leave null to match all event types*/
-		  "SubjectBeginsWith": "",
+          "SubjectBeginsWith": "",
           "SubjectEndsWith": "",
           "endpointUrl": "http://localhost:7071/admin/extensions/EventGridExtensionConfig?functionName=MyFuncName",
           "dispatchStrategy": "DefaultHttpStrategy"
