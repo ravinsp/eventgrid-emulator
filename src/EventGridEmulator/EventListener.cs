@@ -15,14 +15,14 @@ namespace EventGridEmulator
         
         private readonly ILogger _logger;
         private readonly EventRequestParser _requestParser;
-        private readonly DispatcherStrategyFactory _dispatcherStrategyFactory;
+        private readonly SubscriptionLookup _subscriptionLookup;
 
-        public EventListener(EmulatorConfiguration config, ILogger logger)
+        public EventListener(EmulatorConfiguration config, SubscriptionLookup subscriptionLookup, ILogger logger)
         {
             _config = config;
             _logger = logger;
+            _subscriptionLookup = subscriptionLookup;
             _requestParser = new EventRequestParser(config.Topics, logger);
-            _dispatcherStrategyFactory = new DispatcherStrategyFactory(config.DispatchStrategies, logger);
 
         }
 
@@ -64,7 +64,7 @@ namespace EventGridEmulator
                 }
                 catch(Exception ex)
                 {
-                    _logger.LogError("Invalid reqest body format. Could not parse events.");
+                    _logger.LogError("Invalid request body format. Could not parse events.");
                     _logger.LogError(ex.ToString());
                 }
 
@@ -75,7 +75,7 @@ namespace EventGridEmulator
                         _logger.LogInfo($"Received event: {JsonConvert.SerializeObject(ev)}");
                     }
 
-                    await DispatchEventsAsync(topicConfiguration, events);
+                    _subscriptionLookup.QueueEventsToDispatch(topicConfiguration, events);
                     return;
                 }
                 else
@@ -87,15 +87,6 @@ namespace EventGridEmulator
             response.StatusCode = 400; //bad request
             response.Close();
         }
-
-        private async Task DispatchEventsAsync(TopicConfiguration topicConfiguration, IEnumerable<EventGridEvent> events)
-        {
-            var dispatcher = new EventDispatcher(topicConfiguration.Subscriptions, _dispatcherStrategyFactory, _logger);
-
-            foreach (var ev in events)
-            {
-                await dispatcher.DispatchEventAsync(ev);
-            }
-        }
     }
 }
+;

@@ -1,7 +1,9 @@
 ﻿using EventGridEmulator.Contracts;
+using EventGridEmulator.Logic;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace EventGridEmulator
 {
@@ -14,13 +16,24 @@ namespace EventGridEmulator
             Console.WriteLine("Unofficial Azure EventGrid Emulator");
             Console.WriteLine("by Ravin Perera");
             Console.WriteLine();
-
+            
             try
             {
                 var config = ReadConfigurationFromFile();
 
-                var listener = new EventListener(config, new ConsoleLogger());
-                listener.StartListeningAsync().Wait();
+                var globalEventQueue = new EventQueue();
+                var consoleLogger = new ConsoleLogger();
+                var subscriptionLookup = new SubscriptionLookup(globalEventQueue, consoleLogger);
+
+                //Start listening for incoming events.
+                var listener = new EventListener(config, subscriptionLookup, consoleLogger);
+                var t1 = listener.StartListeningAsync();
+
+                //Starts watching the event queue.
+                var dispatcher = new EventDispatcher(config, globalEventQueue, consoleLogger);
+                var t2 = dispatcher.StartListening();
+
+                Task.WaitAll(t1, t2);
             }
             catch (Exception ex)
             {

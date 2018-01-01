@@ -44,9 +44,11 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DispatchedEvent.cs" />
     <Compile Include="EmulatorConfiguration.cs" />
     <Compile Include="EventGridEvent.cs" />
     <Compile Include="IDispatcherStrategy.cs" />
+    <Compile Include="IEventQueue.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

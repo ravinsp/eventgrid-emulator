@@ -50,6 +50,7 @@
     </Compile>
     <Compile Include="EventListener.cs" />
     <Compile Include="ConsoleLogger.cs" />
+    <Compile Include="EventDispatcher.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

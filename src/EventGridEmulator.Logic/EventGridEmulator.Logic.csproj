@@ -48,10 +48,11 @@
       <Link>GlobalAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DispatcherStrategyFactory.cs" />
-    <Compile Include="EventDispatcher.cs" />
+    <Compile Include="EventQueue.cs" />
     <Compile Include="EventRequestParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DispatchStrategies\DefaultHttpStrategy.cs" />
+    <Compile Include="SubscriptionLookup.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EventGridEmulator.Contracts\EventGridEmulator.Contracts.csproj">
