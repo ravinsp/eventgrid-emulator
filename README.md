@@ -1,3 +1,6 @@
+## THIS REPO IS NOT MAINTAINED
+### Please have a look at [AzureEventGridSimulator](https://github.com/pmcilreavy/AzureEventGridSimulator) for a more complete and active repo than my implementation.
+
 # Azure Event Grid Emulator (Unofficial)
 
 Azure Event Grid Emulator is intended to be a tool to help test Event Grid based interactions between your application and Azure functions locally. This is not an official feature-complete emulator. This tool should become obsolete if/when Microsoft introduces an Event Grid emulator of their own.
