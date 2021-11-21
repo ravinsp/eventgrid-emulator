@@ -25,7 +25,7 @@ namespace EventGridEmulator.Logic.DispatchStrategies
 
         public async Task DispatchEventAsync(string endpointUrl, EventGridEvent ev)
         {
-            _logger.LogInfo($"{Environment.NewLine}Dispatching event (Id: {ev.Id}) to '{endpointUrl}' using '{nameof(DefaultHttpStrategy)}'");
+            _logger.LogInfo($"{Environment.NewLine}Dispatching event (Id: {ev.id}) to '{endpointUrl}' using '{nameof(DefaultHttpStrategy)}'");
 
             var json = JsonConvert.SerializeObject(new EventGridEvent[] { ev });
             using (var content = new StringContent(json, Encoding.UTF8, JsonMimeType))

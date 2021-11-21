@@ -28,7 +28,7 @@ namespace EventGridEmulator.Logic
                    }).ToList();
 
                 if (eventsToDispatch.Count == 0)
-                    _logger.LogInfo($"No matching subscriptions found for event {ev.Id} (Type: {ev.EventType})");
+                    _logger.LogInfo($"No matching subscriptions found for event {ev.id} (Type: {ev.eventType})");
 
                 foreach (var de in eventsToDispatch)
                     _eventQueue.Enqueue(de);
@@ -38,9 +38,9 @@ namespace EventGridEmulator.Logic
         private IEnumerable<SubscriptionConfiguration> GetMatchingSubscriptions(EventGridEvent ev, IEnumerable<SubscriptionConfiguration> subscriptions)
         {
             return subscriptions.Where(s =>
-                (string.IsNullOrEmpty(ev.EventType) || s.EventTypes == null || s.EventTypes.Contains(ev.EventType)) && //Match event type
-                (string.IsNullOrEmpty(s.SubjectBeginsWith) || (!string.IsNullOrEmpty(ev.Subject) && ev.Subject.StartsWith(s.SubjectBeginsWith))) && //Match subject prefix
-                (string.IsNullOrEmpty(s.SubjectEndsWith) || (!string.IsNullOrEmpty(ev.Subject) && ev.Subject.EndsWith(s.SubjectEndsWith))) //Match subject suffix
+                (string.IsNullOrEmpty(ev.eventType) || s.EventTypes == null || s.EventTypes.Contains(ev.eventType)) && //Match event type
+                (string.IsNullOrEmpty(s.SubjectBeginsWith) || (!string.IsNullOrEmpty(ev.subject) && ev.subject.StartsWith(s.SubjectBeginsWith))) && //Match subject prefix
+                (string.IsNullOrEmpty(s.SubjectEndsWith) || (!string.IsNullOrEmpty(ev.subject) && ev.subject.EndsWith(s.SubjectEndsWith))) //Match subject suffix
                 );
         }
     }
